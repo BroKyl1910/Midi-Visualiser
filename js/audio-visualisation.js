@@ -1,43 +1,52 @@
 // initialise all nodes
 function AudioVisualisation() {
   let audioCtx = new AudioContext()
-  let audioElement = document.getElementById('audio-source');
-  audioElement.play();
+  let audioElement = document.getElementById('audio-source')
+  audioElement.play()
   let analyser = audioCtx.createAnalyser()
   analyser.fftSize = 2048
+  // analyser.fftSize = 32
   let source = audioCtx.createMediaElementSource(audioElement)
-  let canvas = document.getElementById('audio-visual')
-  let ctx = canvas.getContext('2d')
 
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
+  let app = new PIXI.Application({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  })
 
-  const draw = (data) => {
-    data = [...data] // convert from unsigned array to normal array
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    let space = canvas.width / data.length
-    data.forEach((value, i) => {
-      ctx.beginPath()
-      ctx.moveTo(space * i, canvas.height) //x,y
-      ctx.lineTo(space * i, canvas.height - value) //x,y
-      ctx.stroke()
-    })
-  }
+  let soundNodes = []
 
-  const visualisationLoop = () => {
-    // has to recursively call itself
-    requestAnimationFrame(visualisationLoop)
-
-    analyser.getByteFrequencyData(data) // array passed by reference
-    // console.log(data);
-    draw(data)
-  }
+  document
+    .getElementsByClassName('visualisation-screen')[0]
+    .appendChild(app.view)
 
   // connect sound source to analyser node and default speaker output
   source.connect(analyser)
   source.connect(audioCtx.destination)
-
-  // create array to store audio frequency data
   let data = new Uint8Array(analyser.frequencyBinCount)
-  requestAnimationFrame(visualisationLoop) // call to start animation loop
+
+  const draw = () => {
+    for (var i = app.stage.children.length - 1; i >= 0; i--) {	app.stage.removeChild(app.stage.children[i]);};
+    // create array to store audio frequency data
+    analyser.getByteFrequencyData(data) // array passed by reference
+    let frequencyData = [...data] // convert from unsigned array to normal array
+    
+    // index = frequency, value = volume
+    frequencyData.forEach((vol, freq) => {
+      let node = new SoundNode(freq, vol, app.renderer);
+      soundNodes.push(node);
+    })
+
+    var newSoundNodes = [];
+    soundNodes.forEach((node) => {
+      node.update();
+      if(node.visible){
+        app.stage.addChild(node.sprite);
+        newSoundNodes.push(node);
+      }
+    });
+
+    soundNodes = newSoundNodes;
+  }
+
+  app.ticker.add(draw)
 }
