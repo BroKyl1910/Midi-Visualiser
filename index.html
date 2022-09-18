@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Midi Visualiser</title>
+    <title>Audio Visualiser</title>
     <link rel="stylesheet" href="css/file-selection.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -12,23 +12,27 @@
   <body>
     <div class="screen-host">
       <div class="selection-screen">
-        <h1>Select MIDI File</h1>
+        <h1>Select MP3 File</h1>
         <div class="custom-hr"></div>
         <div class="input-wrapper">
             <div class="file-input-wrapper">
                 <div class="file-input-container">
-                    <input type="file" name="file" class="file-input" id="file" accept=".mid" />
-                    <label for="file" class="file-input-label waiting"><i class="fas fa-file-upload label-upload-icon"></i>Upload MIDI file (.mid)</label>
+                    <input type="file" name="file" class="file-input" id="file" accept=".mp3" />
+                    <label for="file" class="file-input-label waiting"><i class="fas fa-file-upload label-upload-icon"></i>Upload MP3 file (*.mp3)</label>
                     <label for="file" class="file-input-label selected"><i class="fas fa-check label-check-icon"></i>File selected</label>
                 </div>
             </div>
             <div class="submit">Go!</div>
         </div>
       </div>
+      <div class="visualisation-screen">
+        im here
+        <canvas id="audio-visual"></canvas>
+        <audio id="audio-source"></audio>
+      </div>
     </div>
 
-    <script src="/js/lib/midi-parser.js"></script>
-    <script src="/js/midi-visualisation.js"></script>
+    <script src="/js/audio-visualisation.js"></script>
     <script src="/js/file-selection.js"></script>
   </body>
 </html>
