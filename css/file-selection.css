@@ -22,6 +22,7 @@
     width: 70%;
     padding: 30px;
     border-radius: 5px;
+    height: 700px;
 }
 
 .custom-hr{
@@ -30,4 +31,86 @@
     height: 0;
     width: 100%;
     border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.input-wrapper{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-input-wrapper {
+    flex-basis: 80%;
+    background: rgba(0,0,0,0.1);
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .file-input-wrapper:hover {
+        background: rgba(0,0,0,0.3);
+    }
+
+.file-input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.file-input-label.selected {
+    display: none;
+    color: rgba(255,255,255,0.7);
+}
+
+.label-check-icon {
+    color: rgba(255,255,255,0.7);
+    font-size: 16px;
+    display: inline-block;
+    font-weight: 400;
+    margin-right: 10px;
+}
+
+.file-input-label, .label-upload-icon {
+    color: rgba(255,255,255,0.3);
+    font-size: 16px;
+    display: inline-block;
+    font-weight: 400;
+}
+
+.label-upload-icon {
+    margin-right: 10px;
+}
+
+.file-input:focus .file-input-label,
+.file-input-label:hover,
+.file-input-label:hover .label-upload-icon {
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+}
+
+.submit{
+    flex-basis: 10%;
+    color: rgba(255,255,255,0.7);
+    background-color: rgb(0, 65, 109);
+    border: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all ease 0.3s;
+}
+
+.submit:hover{
+    cursor:pointer;
+    color: rgba(255,255,255,1);
+    background-color: rgb(0, 92, 153);
 }
