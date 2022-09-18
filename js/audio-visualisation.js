@@ -4,8 +4,8 @@ function AudioVisualisation() {
   let audioElement = document.getElementById('audio-source')
   audioElement.play()
   let analyser = audioCtx.createAnalyser()
-  analyser.fftSize = 2048
-  // analyser.fftSize = 32
+  // analyser.fftSize = 2048
+  analyser.fftSize = 32
   let source = audioCtx.createMediaElementSource(audioElement)
 
   let app = new PIXI.Application({
@@ -24,28 +24,35 @@ function AudioVisualisation() {
   source.connect(audioCtx.destination)
   let data = new Uint8Array(analyser.frequencyBinCount)
 
-  const draw = () => {
-    for (var i = app.stage.children.length - 1; i >= 0; i--) {	app.stage.removeChild(app.stage.children[i]);};
+  let frameInterval = Math.random() * 90;
+  let elapsed = frameInterval;
+
+  const draw = (delta) => {
     // create array to store audio frequency data
     analyser.getByteFrequencyData(data) // array passed by reference
     let frequencyData = [...data] // convert from unsigned array to normal array
-    
-    // index = frequency, value = volume
-    frequencyData.forEach((vol, freq) => {
-      let node = new SoundNode(freq, vol, app.renderer);
-      soundNodes.push(node);
+
+    elapsed += delta;
+    if (elapsed >= frameInterval) {
+      // index = frequency, value = volume
+      frequencyData.forEach((vol, freq) => {
+        let node = new SoundNode(freq, vol, app.renderer)
+        soundNodes.push(node)
+      })
+      elapsed = 0;
+      frameInterval = Math.random() * 90;
+    }
+
+    var newSoundNodes = []
+    soundNodes.forEach((node) => {
+      node.update()
+      if (node.visible) {
+        app.stage.addChild(node.getSprite());
+        newSoundNodes.push(node)
+      }
     })
 
-    var newSoundNodes = [];
-    soundNodes.forEach((node) => {
-      node.update();
-      if(node.visible){
-        app.stage.addChild(node.sprite);
-        newSoundNodes.push(node);
-      }
-    });
-
-    soundNodes = newSoundNodes;
+    soundNodes = newSoundNodes
   }
 
   app.ticker.add(draw)

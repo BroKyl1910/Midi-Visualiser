@@ -9,8 +9,12 @@ class SoundNode {
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
     }
-    this.sprite = this.#createSprite(renderer)
+    this.sprite = this.getSprite()
     this.visible = true
+  }
+
+  getSprite(){
+    return this.#createSprite(this.renderer);
   }
 
   // Color dependent on frequency, higher = lighter
@@ -24,20 +28,21 @@ class SoundNode {
   }
 
   update() {
-    this.radius -= 0.01 * this.radius;
-    if (this.radius <= 10) this.visible = false
+    this.radius -= 1;
+    if (this.radius <= 5) this.visible = false
   }
 
   #createSprite(renderer) {
     let NodeGraphics = new PIXI.Graphics()
+    NodeGraphics.clear();
     NodeGraphics.beginFill(this.color)
     NodeGraphics.drawCircle(0, 0, this.radius/2)
     NodeGraphics.endFill()
 
     var texture = renderer.generateTexture(NodeGraphics)
     var sprite = new PIXI.Sprite(texture)
-    sprite.position.x = this.position.x
-    sprite.position.y = this.position.y
+    sprite.position.x = this.position.x - 0.5 * this.radius
+    sprite.position.y = this.position.y - 0.5 * this.radius
     return sprite
   }
 }
