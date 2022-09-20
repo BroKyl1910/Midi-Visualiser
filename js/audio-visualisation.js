@@ -11,9 +11,11 @@ function AudioVisualisation() {
   let app = new PIXI.Application({
     width: window.innerWidth,
     height: window.innerHeight,
+    backgroundColor: 0x000000
   })
 
   let sceneContainer = new PIXI.Container();
+  app.stage.addChild(sceneContainer)
   let soundNodes = []
 
   document
@@ -25,10 +27,10 @@ function AudioVisualisation() {
   source.connect(audioCtx.destination)
   let data = new Uint8Array(analyser.frequencyBinCount)
 
-  let frameInterval = 60;
+  let frameInterval = 10;
   let elapsed = frameInterval;
 
-  const draw = (delta) => {
+  const update = (delta) => {
     for (var i = sceneContainer.children.length - 1; i >= 0; i--) {	sceneContainer.removeChild(sceneContainer.children[i]);};
     // create array to store audio frequency data
     analyser.getByteFrequencyData(data) // array passed by reference
@@ -67,8 +69,7 @@ function AudioVisualisation() {
     })
 
     soundNodes = newSoundNodes
-    app.stage.addChild(sceneContainer)
   }
 
-  app.ticker.add(draw)
+  app.ticker.add(update)
 }

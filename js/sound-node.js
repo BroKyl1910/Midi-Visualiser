@@ -26,7 +26,7 @@ class SoundNode {
   }
 
   update(delta) {
-    this.radius -= Math.random() * 5 * delta;
+    this.radius -= 0.03 * this.radius * delta;
     if (this.radius <= 5) this.visible = false
   }
 
@@ -45,6 +45,8 @@ class SoundNode {
     var sprite = new PIXI.Sprite(texture)
     sprite.position.x = this.position.x - this.radius;
     sprite.position.y = this.position.y - this.radius;
+    sprite.width = this.radius * 2;
+    sprite.height = this.radius * 2;
     return sprite
   }
 }
